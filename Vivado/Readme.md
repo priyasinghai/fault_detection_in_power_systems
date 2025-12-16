@@ -1,0 +1,1 @@
+This folder contains the FPGA implementation and verification artifacts for the Verilog-based fault detection module. The trained and frozen decision tree logic was implemented as synthesizable Verilog and validated using behavioral simulation and synthesis in Xilinx Vivado
