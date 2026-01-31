@@ -1,0 +1,41 @@
+// -------- PIN DEFINITIONS --------
+#define CURRENT_PIN 34     // ACS712 OUT
+#define RELAY_PIN   26     // Relay IN (LOW = ON)
+#define GREEN_LED   19   // Normal
+#define RED_LED     18   // Fault
+
+// -------- SETTINGS --------
+int threshold = 3300;      // adjust after testing
+int delayMs   = 200;
+
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  pinMode(RED_LED, OUTPUT);
+
+  // Initial state
+  digitalWrite(RELAY_PIN, HIGH);   // Relay OFF
+  digitalWrite(GREEN_LED, HIGH);   // Normal
+  digitalWrite(RED_LED, LOW);      // No fault
+}
+
+void loop() {
+  int adcValue = analogRead(CURRENT_PIN);
+  Serial.println(adcValue);
+
+  if (adcValue > threshold) {
+    // FAULT
+    digitalWrite(RELAY_PIN, LOW);    // Trip relay
+    digitalWrite(RED_LED, HIGH);
+    digitalWrite(GREEN_LED, LOW);
+  } else {
+    // NORMAL
+    digitalWrite(RELAY_PIN, HIGH);   // Relay OFF
+    digitalWrite(RED_LED, LOW);
+    digitalWrite(GREEN_LED, HIGH);
+  }
+
+  delay(delayMs);
+}
